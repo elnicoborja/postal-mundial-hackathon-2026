@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Prototipo local de Postal Mundial: explora miradores, elige una toma de ejemplo y revisa el recorrido de entrega.">
+  <title>Postal Mundial · Encuentra tu vista</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="referrer" content="no-referrer">
+  <script src="gate.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a href="#main" class="skip">Saltar al contenido</a>
+  <div class="demo-banner"><span class="signal"></span> Prototipo local · Lugares candidatos · Sin reservas ni cobros</div>
+  <header>
+    <a class="brand" href="index.html" aria-label="Postal Mundial, inicio"><span class="brand-symbol" aria-hidden="true">↗</span><span>postal mundial<small>UNA VISTA. TU RECUERDO.</small></span></a>
+    <button id="reset" class="quiet">Reiniciar demo <span aria-hidden="true">↺</span></button>
+  </header>
+  <main id="main">
+    <nav class="steps" aria-label="Tu recorrido">
+      <span data-step="0" aria-current="step"><b>01</b> Explora</span>
+      <span data-step="1"><b>02</b> Personas</span>
+      <span data-step="2"><b>03</b> Elige</span>
+      <span data-step="3"><b>04</b> Revisa</span>
+      <span data-step="4"><b>05</b> Recibe</span>
+    </nav>
+    <section id="explore" class="screen">
+      <div class="intro"><p class="eyebrow">Ciudad de México / Centro Histórico</p><h1>La ciudad se ve<br>mejor contigo.</h1><p>Encuentra una vista, elige tu toma y llévate una postal. Explora cómo sería la experiencia.</p></div>
+      <div class="explore-heading"><h2>Empieza por una vista</h2><div class="segmented" aria-label="Vista del explorador"><button id="map-view" aria-pressed="true">Mapa + lista</button><button id="list-view" aria-pressed="false">Solo lista</button></div></div>
+      <div class="explore-layout">
+        <div class="map-panel" id="map-panel">
+          <div class="map-top"><span class="eyebrow">Centro Histórico</span><span class="map-key">2 candidatos</span></div>
+          <div class="map-canvas" aria-label="Esquema de dos lugares candidatos, no es un mapa de navegación">
+            <svg viewBox="0 0 700 500" role="img" aria-labelledby="map-title"><title id="map-title">Esquema ilustrativo del Centro Histórico, sin escala ni rutas</title>
+              <defs><pattern id="blocks" width="100" height="84" patternUnits="userSpaceOnUse"><rect x="10" y="10" width="75" height="59" rx="4" fill="#262234" stroke="#393348" stroke-width="1"/></pattern></defs>
+              <rect width="700" height="500" fill="url(#blocks)"/><path d="M0 260H700M160 0V500M525 0V500" stroke="#100e1a" stroke-width="25"/>
+              <rect x="468" y="225" width="170" height="155" rx="4" fill="#35313c" stroke="#6b6374" stroke-width="1"/>
+              <rect x="455" y="152" width="165" height="44" rx="4" fill="#47404e"/>
+              <rect x="35" y="96" width="136" height="79" rx="4" fill="#34343e"/>
+              <path d="M215 268H450" stroke="#7d7887" stroke-width="2" stroke-dasharray="3 10"/>
+              <g fill="#c7c1d1" font-size="12" font-family="sans-serif"><text x="516" y="313">ZÓCALO</text><text x="487" y="180">CATEDRAL</text><text x="48" y="141">BELLAS ARTES</text><text x="270" y="251">EJE ILUSTRATIVO</text><text x="640" y="40">N ↑</text></g>
+            </svg>
+            <button class="map-pin selected" data-place="balcon" style="left:65%;top:44%" aria-label="Seleccionar candidato Balcón del Zócalo" aria-pressed="true"><span>01</span><b>Balcón</b></button>
+            <button class="map-pin" data-place="torre" style="left:28%;top:49%" aria-label="Seleccionar candidato Mirador Torre Latino" aria-pressed="false"><span>02</span><b>Torre Latino</b></button>
+          </div>
+          <p class="map-note">Esquema ilustrativo · Sin escala ni indicaciones de llegada. Los puntos representan candidatos, no disponibilidad.</p>
+        </div>
+        <div class="place-list" id="place-list" aria-label="Lugares candidatos"></div>
+      </div>
+      <section id="place-detail" class="place-detail" aria-labelledby="detail-title"></section>
+      <div class="principles"><div><span>01 / ENCUENTRA</span><h3>Una vista con contexto.</h3><p>Acceso, condiciones y quién te acompaña, antes de elegir.</p></div><div><span>02 / ELIGE</span><h3>Tu toma, tu decisión.</h3><p>Destacadas para orientarte. Todas las tomas para decidir.</p></div><div><span>03 / LLÉVATELA</span><h3>Un recuerdo privado.</h3><p>Solo la selección pasa al recorrido de entrega.</p></div></div>
+    </section>
+    <section id="participants" class="screen" hidden>
+      <button class="back" data-action="explore">← Volver a las vistas</button>
+      <div class="screen-heading"><p class="eyebrow">02 / Antes de la selección</p><h1>Cada persona decide.</h1><p>Configura un grupo de ejemplo. Todas las aprobaciones empiezan pendientes. En el servicio real, se requiere permiso antes de capturar.</p></div>
+      <div class="notice">Solo demostración con una ilustración pública de adultos generados. No capturamos personas ni analizamos caras, edad o identidad. La categoría se declara y se revisa por una persona.</div>
+      <div class="group-layout"><div><label class="count-label" for="person-count">Personas de ejemplo</label><select id="person-count"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select><div id="participant-config"></div><button id="create-batch" class="primary">Crear grupo de ejemplo</button><button id="change-group" hidden>Cambiar personas e invalidar accesos</button><p class="small">No pedimos nombres, fechas de nacimiento ni asociamos personas con caras. Agregar o cambiar personas requiere un grupo nuevo.</p></div><aside class="group-panel"><h2>Aprobaciones separadas</h2><p>Cada adulto aprueba por sí mismo. Una persona menor o de edad incierta sigue la ruta del responsable.</p><p class="guardian-warning">No verifica identidad ni tutela</p><p>Es un registro de ejemplo, no una validación de consentimiento real. Si una persona menor no quiere participar, registra una negativa. Una negativa bloquea todo el grupo.</p><div id="group-status" class="notice" role="status">Sin grupo creado. Selección bloqueada.</div><p id="group-error" class="form-error" role="alert"></p><button class="primary" id="proceed-group" disabled>Continuar a la selección de ejemplo →</button></aside></div>
+      <div id="consent-list" class="consent-list"></div>
+      <section class="access-section"><h2>Un acceso por persona</h2><p>Cada QR abre únicamente un estado de ejemplo. No es un QR de pago ni concede un archivo comprado.</p><p class="small">Prueba en esta misma computadora. La dirección 127.0.0.1 no ofrece un servicio accesible desde tu teléfono.</p><button id="issue-links" disabled>Crear accesos de estado</button><div id="recipient-links" class="recipient-links"></div></section>
+    </section>
+    <section id="choose" class="screen" hidden>
+      <button class="back" data-action="participants">← Revisar personas y accesos</button>
+      <div class="screen-heading"><p class="eyebrow">03 / Selección de ejemplo</p><h1>La que tú elijas.</h1><p>30 posiciones de demo, basadas en una sola ilustración. No son 30 fotografías capturadas.</p></div>
+      <div class="review-layout"><div class="selected-preview"><img id="selected-image" src="assets/03-terrace-approach-v1.png" alt="Ilustración generada de una experiencia fotográfica en una terraza, sin vínculo con un lugar real"><span class="image-label">ILUSTRACIÓN GENERADA · DEMO</span><div class="preview-foot"><strong id="selected-label">Toma de ejemplo 07</strong><span id="selected-reason">Composición sugerida, dato de ejemplo</span></div></div><aside class="review-summary"><p class="eyebrow">Tu selección</p><h2 id="choice-number">07 / 30</h2><p>Puedes elegir cualquier posición, incluida una que no esté destacada.</p><div class="notice">En la experiencia propuesta, la ráfaga permanece en el dispositivo. Aquí no abrimos la cámara ni subimos archivos.</div><p class="small">Al continuar se conserva solo tu selección dentro de esta demo. Puedes volver para compararla.</p><button class="primary" data-action="review">Revisar esta selección <span aria-hidden="true">→</span></button></aside></div>
+      <div class="gallery-heading"><h2>Tu hoja de contacto</h2><div class="segmented" aria-label="Filtrar tomas"><button id="all-shots" aria-pressed="true">Todas (30)</button><button id="highlights" aria-pressed="false">Destacadas (3)</button></div></div>
+      <p class="small" id="gallery-description">30 ejemplos disponibles. Las destacadas son etiquetas de demostración, sin análisis de calidad real.</p>
+      <div id="shot-grid" class="shot-grid" aria-label="Selecciona una toma de ejemplo"></div>
+    </section>
+    <section id="review" class="screen" hidden>
+      <button class="back" data-action="choose">← Cambiar selección</button>
+      <div class="screen-heading"><p class="eyebrow">04 / Antes de continuar</p><h1>Tu postal. Todo claro.</h1><p>Vista previa del pedido. La aprobación del grupo no es un pago ni concede un archivo comprado. Este prototipo no genera un cobro.</p></div>
+      <div class="checkout-layout"><div class="order-card"><img id="order-image" src="assets/03-terrace-approach-v1.png" alt="Ilustración de ejemplo seleccionada"><div class="order-body"><span class="eyebrow">Archivo digital / Ejemplo</span><h2 id="order-title">Toma 07</h2><p id="order-place"></p><dl><div><dt>Precio</dt><dd>Por definir</dd></div><div><dt>Vendedor</dt><dd>Por confirmar</dd></div><div><dt>Método previsto</dt><dd>CoDi</dd></div></dl><p class="small">Sin QR de pago, cargos ni cuenta bancaria conectada.</p></div></div><div class="checkout-copy"><h2>Solo la que elegiste.</h2><p>El flujo propuesto pide tu permiso antes de guardar la imagen final y su vista previa para entregártelas. Las demás tomas permanecen en el dispositivo hasta el cierre de la selección.</p><label class="consent"><input type="checkbox" id="consent"><span>Entiendo que estoy probando una demostración y quiero ver el siguiente paso.</span></label><p class="small">Esta casilla controla la demo. No es un consentimiento de captura ni un permiso para subir fotografías.</p><button class="primary" id="continue-delivery" disabled>Ver entrega de ejemplo <span aria-hidden="true">→</span></button><details><summary>Impresión y privacidad</summary><p>La entrega impresa al terminar de comer dependería de capacidad y horario de corte confirmados. No está disponible aquí.</p><p>Los plazos de descarga y borrado están por aprobar. Una constancia privada debe distinguir archivos del servicio, copias residuales y registros de pago. No puede certificar el borrado de tu teléfono.</p></details></div></div>
+    </section>
+    <section id="delivery" class="screen" hidden>
+      <button class="back" data-action="review">← Volver al resumen</button>
+      <div class="screen-heading"><p class="eyebrow">05 / Estado ilustrativo</p><h1 id="delivery-title">Así recibirías tu postal.</h1><p>Explora los estados. Ninguno representa un pago, envío o borrado real. Los accesos por persona solo consultan un estado.</p></div>
+      <div class="delivery-layout"><div class="delivery-card"><span class="eyebrow" id="delivery-badge">Pendiente de verificación · Demo</span><h2 id="delivery-state-title">Esperando confirmación</h2><p id="delivery-message">En un servicio real, el archivo se habilita después de verificar el pago en el servidor.</p><div class="status-track" id="status-track"></div><button class="primary" id="download-demo" disabled>Guardar ilustración de ejemplo ↓</button><p class="small">El archivo de ejemplo es público dentro de este prototipo. No contiene tu retrato.</p></div><aside class="state-controls"><h3>Controles de demostración</h3><p class="small">Cambia la pantalla para revisar el comportamiento propuesto.</p><div class="state-buttons"><button data-state="pending" aria-pressed="true">Pendiente</button><button data-state="ready" aria-pressed="false">Entrega lista</button><button data-state="failed" aria-pressed="false">Entrega con error</button></div><details id="deletion-details"><summary>Ver constancia de ejemplo</summary><p><strong>Constancia ilustrativa, sin validez operativa.</strong></p><dl><div><dt>Archivos del servicio</dt><dd>Sin borrado ejecutado</dd></div><div><dt>Ráfaga personal</dt><dd>No capturada</dd></div><div><dt>Dispositivo y respaldos</dt><dd>No verificados</dd></div><div><dt>Registros de pago</dt><dd>No generados</dd></div></dl></details></aside></div>
+    </section>
+    <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  </main>
+  <footer><span class="brand-small">postal mundial ↗</span><p>Exploración de producto · 14 noviembre 2026</p><p>Lugares, precio y operación pendientes de validación. Prototipo local, sin conexión con pagos ni mapas externos.</p></footer>
+  <dialog id="reset-dialog"><h2>¿Volver al inicio?</h2><p>Se invalidarán los accesos del grupo y se restablecerán la selección y los estados de esta demo. No hay fotografías personales guardadas.</p><div class="dialog-actions"><button id="cancel-reset">Seguir aquí</button><button id="confirm-reset" class="primary">Reiniciar demo</button></div><p id="reset-error" class="form-error" role="alert"></p></dialog>
+</body>
+</html>
